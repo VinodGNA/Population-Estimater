@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sawey LO</title>
+</head>
+<link rel="stylesheet" type="text/css" href="assets/styles/global.css"></link>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"> </script>
+<script type="text/javascript" src="assets/scripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="assets/scripts/zing/zingchart.min.js"></script>
+<script>
+	function isNumberKey(evt,ele)
+	{
+	  var charCode = (evt.which) ? evt.which : evt.keyCode;
+	  console.log($(ele).val().indexOf("."));
+	  if (($(ele).val().indexOf(".") != -1 && charCode != 46) || ($(ele).val().indexOf(".") == -1 && charCode == 46)) {
+	  	  if (charCode != 46 && charCode > 31 
+	  	    && (charCode < 48 || charCode > 57))
+	  	     return false;
+	  
+	  	  return true;
+    // It has a dot
+	  }
+	  else{
+	  	return false
+	  }
+	}
+
+	function isNumberKey2(evt,ele)
+	{
+	  var charCode = (evt.which) ? evt.which : evt.keyCode;
+	  if(charCode != 46){
+		  if (charCode > 31 && (charCode < 48 || charCode > 57))
+		  	     return false;
+		  
+		  return true;
+	  }
+	  else return false;
+	}
+</script>
+<body>
+	<div class="container">
+		<div class="display">
+			<div class="dataDisplay" ng-app="myApp" ng-controller="myCtrl" data-ng-init="createGraphData()">
+				<div class="trBlock" id='heads'>
+					<div class="trInline title bold heading">Population Estimator</div>
+					<div class="trInline inlineData bold heading center">A</div>
+					<div class="trInline inlineData bold heading center">B</div>
+					<div class="trInline inlineData bold heading center">C</div>
+				</div>
+				<div class="trBlock" style="margin-top:20px;">
+					<div class="trInline title">% of population reproducing</div>
+					<div class="trInline inlineData" ><input ng-model="populationData[0].reproduce[0].reproduce" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="95.0%" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[0].reproduce[1].reproduce" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="85.0%" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[0].reproduce[2].reproduce" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="85.0%" class="editable"/></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title">Average # of offspring</div>
+					<div class="trInline inlineData"><input ng-model="populationData[1].offspring[0].offspring" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" value="2.8" value="2.8" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[1].offspring[1].offspring" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" value="2.8" value="3.0" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[1].offspring[2].offspring" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey(event,this)" value="2.8" value="4.0" class="editable"/></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title">% of offspring surviving to adulthood</div>
+					<div class="trInline inlineData"><input ng-model="populationData[2].adulthood[0].adulthood" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="80.0%" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[2].adulthood[1].adulthood" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="82.0%" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[2].adulthood[2].adulthood" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" onkeyup="$(this).val($(this).val().split('%')[0]+'%');" value="62.3%" class="editable"/></div>
+					<div class="trInline inlineData bold heading2" >Total Population</div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title">Beginning (starting) population</div>
+					<div class="trInline inlineData"><input ng-model="populationData[3].population[0].initialPopulation" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" value="100000" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[3].population[1].initialPopulation" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" value="2" class="editable"/></div>
+					<div class="trInline inlineData"><input ng-model="populationData[3].population[2].initialPopulation" ng-blur="createGraphData()" ng-Keydown="keyPressAction($event)" onkeypress="return isNumberKey2(event,this)" value="2" class="editable"/></div>
+					<div class="trInline inlineData" >1,00,004</div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 10 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[9][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[9][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[9][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[9][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 50 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[49][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[49][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[49][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[49][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 100 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[99][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[99][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[99][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[99][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 200 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[199][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[199][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[199][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[199][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 300 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[299][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[299][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[299][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[299][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">Population after 500 generations</div>
+					<div class="trInline inlineData bold" ng-bind="graphData[499][1].noOfIndividual[0] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[499][1].noOfIndividual[1] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[499][1].noOfIndividual[2] | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="graphData[499][2].grandTots | number : 0" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock" style="margin-top:20px;">
+					<div class="trInline title">Beginning population percent each</div>
+					<div class="trInline inlineData">100.0%</div>
+					<div class="trInline inlineData">0.0%</div>
+					<div class="trInline inlineData">0.0%</div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 10 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[9][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[9][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[9][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 50 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[49][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[49][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[49][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 100 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[99][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[99][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[99][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 200 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[199][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[199][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[199][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 300 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[299][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[299][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[299][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+				<div class="trBlock">
+					<div class="trInline title bold">% Population after 500 generations</div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[499][3].eachGroupTotalPopulation[0] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[499][3].eachGroupTotalPopulation[1] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+					<div class="trInline inlineData bold" ng-bind="(graphData[499][3].eachGroupTotalPopulation[2] | number : 1) + '%'" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"></div>
+				</div>
+			</div>
+			<div class="visualDisplay">
+				<div id="visualL" class="visualL graphCon">
+					<img class='colorbar' src="assets/images/colorbar.png">
+					<img class='vertical_text' src="assets/images/vertical_text.png">
+						
+				</div>
+				<div id="visualR" class="visualR graphCon">
+					<img class='colorbar' src="assets/images/colorbar.png">
+					<div class='graphHead bold'>Each group's % of total population</div>
+					<svg id="graph2" class="graphs" width="360" height="250">
+						
+						<path id="gridY_0" stroke-width = "0.2" stroke = "#000000"></path>
+						<path id="gridX_0" stroke-width = "0.2" stroke = "#000000"></path>
+
+						<line stroke-width="1" stroke="#333" x1="4.5" x2="4.5" y1="0" y2="254"></line>
+						<line stroke-width="1" stroke="#333" x1="0" x2="360" y1="250.5" y2="250.5"></line>
+						<g style="" transform="translate(4 250) scale(1 -1)">
+							<path id="path1" stroke="rgb(79, 129, 189)" stroke-width="4" fill="none" d="" />
+							<path id="path2" stroke="rgb(192, 80, 77)" stroke-width="4" fill="none" d="" />
+							<path id="path3" stroke="rgb(155, 187, 89)" stroke-width="4" fill="none" d="" />
+						</g>
+						
+						<text class='ytext' id='yt_0' x="-40" y="15" fill="#808285">100.0%</text>
+						<text class='ytext' id='yt_1' x="-35" y="15" fill="#808285">90.0%</text>
+						<text class='ytext' id='yt_2' x="-35" y="15" fill="#808285">80.0%</text>
+						<text class='ytext' id='yt_3' x="-35" y="15" fill="#808285">70.0%</text>
+						<text class='ytext' id='yt_4' x="-35" y="15" fill="#808285">60.0%</text>
+						<text class='ytext' id='yt_5' x="-35" y="15" fill="#808285">50.0%</text>
+						<text class='ytext' id='yt_6' x="-35" y="15" fill="#808285">40.0%</text>
+						<text class='ytext' id='yt_7' x="-35" y="15" fill="#808285">30.0%</text>
+						<text class='ytext' id='yt_8' x="-35" y="15" fill="#808285">20.0%</text>
+						<text class='ytext' id='yt_9' x="-35" y="15" fill="#808285">10.0%</text>
+						<text class='ytext' id='yt_10' x="-29" y="15" fill="#808285">0.0%</text>
+
+						<text class='xtext' id='xt_0' x="0" y="270" fill="#808285">1</text>
+						<text class='xtext' id='xt_1' x="0" y="270" fill="#808285">51</text>
+						<text class='xtext' id='xt_2' x="0" y="270" fill="#808285">101</text>
+						<text class='xtext' id='xt_3' x="0" y="270" fill="#808285">151</text>
+						<text class='xtext' id='xt_4' x="0" y="270" fill="#808285">201</text>
+						<text class='xtext' id='xt_5' x="0" y="270" fill="#808285">251</text>
+						<text class='xtext' id='xt_6' x="0" y="270" fill="#808285">301</text>
+						<text class='xtext' id='xt_7' x="0" y="270" fill="#808285">351</text>
+						<text class='xtext' id='xt_8' x="0" y="270" fill="#808285">401</text>
+						<text class='xtext' id='xt_9' x="0" y="270" fill="#808285">451</text>
+						<text class='xtext' id='xt_10' x="0" y="270" fill="#808285">501</text>
+						
+						<text class='xtext1' id='xt_6' x="160" y="290" fill="#000">Generation</text>
+						
+
+					</svg><!-- 
+					<div id='left_scale'>
+						
+					</div>
+					<div id='botm_scale'></div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="assets/scripts/script.js"></script>
+</html>
